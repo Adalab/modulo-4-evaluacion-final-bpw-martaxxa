@@ -12,7 +12,6 @@ async function getConnection() {
     password: process.env["MYSQL_PASS"],
     database: process.env["MYSQL_SCHEMA"],
   };
-  console.log(connectionData);
 
   const connection = await mysql.createConnection(connectionData);
   await connection.connect();
@@ -44,10 +43,26 @@ app.get("/rugby-femenino", async (req, res) => {
 
   res.json({
     info: {
-      teams_count: teams.length,
-      leagues_count: leagues.length,
-      players_count: players.length,
+      teams_num: teams.length,
+      leagues_num: leagues.length,
+      players_num: players.length,
     },
     results: {teams, leagues, players,}
   });
+});
+
+app.get("/rugby-femenino/teams/:id", async (req, res) => {
+  console.log(req.params);
+
+  const conn = await getConnection();
+
+  const [results] = await conn.query(`
+    SELECT * FROM teams
+    WHERE team_id = ?;`, [req.params.id]);
+
+  await conn.end();
+
+  res.json(
+    results[0]
+  );
 });
