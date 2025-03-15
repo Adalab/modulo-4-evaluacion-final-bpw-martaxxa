@@ -51,9 +51,55 @@ app.get("/rugby-femenino", async (req, res) => {
   });
 });
 
-app.get("/rugby-femenino/teams/:id", async (req, res) => {
-  console.log(req.params);
+app.get("/rugby-femenino/teams", async (req, res) => {
 
+  const conn = await getConnection();
+
+  const [teams] = await conn.query("SELECT * FROM teams;");
+
+  await conn.end();
+
+  res.json({
+    info: {
+      teams_num: teams.length,
+    },
+    results: teams
+  });
+});
+
+app.get("/rugby-femenino/players", async (req, res) => {
+
+  const conn = await getConnection();
+
+  const [players] = await conn.query("SELECT * FROM players;");
+
+  await conn.end();
+
+  res.json({
+    info: {
+      players_num: players.length,
+    },
+    results: players
+  });
+});
+
+app.get("/rugby-femenino/leagues", async (req, res) => {
+
+  const conn = await getConnection();
+
+  const [leagues] = await conn.query("SELECT * FROM leagues;");
+
+  await conn.end();
+
+  res.json({
+    info: {
+      leagues_num: leagues.length,
+    },
+    results: leagues
+  });
+});
+
+app.get("/rugby-femenino/teams/:id", async (req, res) => {
   const conn = await getConnection();
 
   const [results] = await conn.query(`
@@ -66,3 +112,30 @@ app.get("/rugby-femenino/teams/:id", async (req, res) => {
     results[0]
   );
 });
+
+app.post('/rugby-femenino/players', async (req, res) => {
+  console.log(req.body)
+
+  try {
+    const conn = await getConnection();
+
+    const [results] = await conn.execute(`
+      INSERT INTO players (name, surname, position, nationality, team_id)
+      VALUES (?, ?, ?, ?, ?);`,
+      [req.body.name, req.body.surname, req.body.position, req.body.nationality, req.body.team_id]);
+
+    await conn.end();
+
+    res.json({
+      "success": true,
+      "id": results.insertId
+    })
+  }
+  catch(err) {
+    res.status(500).json({
+      "success": false,
+      "message": err.toString()
+    })
+  }
+
+})
