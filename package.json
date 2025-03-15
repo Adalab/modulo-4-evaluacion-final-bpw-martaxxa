@@ -1,0 +1,31 @@
+{
+  "name": "evaluacion_final_martaxxa",
+  "version": "1.0.0",
+  "description": "Proyecto que trata sobre rugby femenino en España",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adalab/modulo-4-evaluacion-final-bpw-martaxxa.git#main"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "mysql",
+    "API"
+  ],
+  "author": "Marta Chacartegui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Adalab/modulo-4-evaluacion-final-bpw-martaxxa/issues"
+  },
+  "homepage": "https://github.com/Adalab/modulo-4-evaluacion-final-bpw-martaxxa/tree/main#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
