@@ -115,6 +115,22 @@ app.get("/rugby-femenino/teams/:id", async (req, res) => {
 
 app.post('/rugby-femenino/players', async (req, res) => {
 
+  const {name, surname, position, nationality, team_id} = req.body;
+  let missingFields = [];
+
+  if (!name) missingFields.push("name");
+  if (!surname) missingFields.push("surname");
+  if (!position) missingFields.push("position");
+  if (!nationality) missingFields.push("nationality");
+  if (!team_id) missingFields.push("team_id");
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      "success": false,
+      "message": `Faltan los siguientes campos obligatorios: ${missingFields.join(", ")}`
+    });
+  }
+
   try {
     const conn = await getConnection();
 
