@@ -114,7 +114,6 @@ app.get("/rugby-femenino/teams/:id", async (req, res) => {
 });
 
 app.post('/rugby-femenino/players', async (req, res) => {
-  console.log(req.body)
 
   try {
     const conn = await getConnection();
@@ -129,6 +128,57 @@ app.post('/rugby-femenino/players', async (req, res) => {
     res.json({
       "success": true,
       "id": results.insertId
+    })
+  }
+  catch(err) {
+    res.status(500).json({
+      "success": false,
+      "message": err.toString()
+    })
+  }
+
+})
+
+app.put('/rugby-femenino/players/:id', async (req, res) => {
+
+  try {
+    const conn = await getConnection();
+
+    const [results] = await conn.execute(`
+      UPDATE players 
+      SET name=?, surname=?, position=?, nationality=?, team_id=?
+      WHERE player_id=?;`,
+      [req.body.name, req.body.surname, req.body.position, req.body.nationality, req.body.team_id, req.params.id]);
+
+    await conn.end();
+
+    res.json({
+      "success": true
+    })
+  }
+  catch(err) {
+    res.status(500).json({
+      "success": false,
+      "message": err.toString()
+    })
+  }
+
+})
+
+app.delete('/rugby-femenino/players/:id', async (req, res) => {
+
+  try {
+    const conn = await getConnection();
+
+    const [results] = await conn.execute(`
+      DELETE FROM players 
+      WHERE player_id=?;`,
+      [req.params.id]);
+
+    await conn.end();
+
+    res.json({
+      "success": true
     })
   }
   catch(err) {
