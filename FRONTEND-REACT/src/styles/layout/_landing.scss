@@ -27,13 +27,19 @@
     }
 
     &__btn {
-        font-family: variables.$fontfamily-secondary;
-        font-size: 1.2rem;
-        background-color: transparent;
-        color: variables.$secondary-color;
-        border: solid 1px;
-        border-radius: 2rem;
+        font-family: variables.$fontfamily-primary;
         margin-top: 1.5rem;
-        padding: 0.6rem;
+        background: variables.$secondary-color;
+        color: white;
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    
+        &:hover {
+          background: #e0356b;
+        }
     }
 }

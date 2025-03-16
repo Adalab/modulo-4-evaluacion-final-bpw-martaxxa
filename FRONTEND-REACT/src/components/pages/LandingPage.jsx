@@ -1,21 +1,10 @@
 import PropTypes from "prop-types";
+import Header from "../Header";
 
 function LandingPage({ handleNavigate }) {
   return (
     <section>
-      <header className="header">
-        <div className="header__box1">
-          <img
-            src="src/images/logo-rf-white.png"
-            alt="Logo Rugby en Femenino"
-            className="header__logo"
-          />
-        </div>
-        <div className="header__box2">
-          <p className="header__inicio">Inicio</p>
-          <p className="header__login">Identifícate</p>
-        </div>
-      </header>
+      <Header/>
       <div className="cover">
         <h1 className="cover__title">Rugby en Femenino</h1>
         <h3 className="cover__subtitle">
