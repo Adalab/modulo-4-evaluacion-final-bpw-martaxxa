@@ -1,0 +1,39 @@
+@use "../core/variables" as variables;
+
+.cover {
+    background-image: url("../images/cover-img.jpg"), linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000);
+    background-size: cover;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: white;
+
+    &__title {
+        font-family: variables.$fontfamily-primary;
+        font-weight: variables.$fontweight-primary;
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    &__subtitle {
+        font-family: variables.$fontfamily-primary;
+    }
+
+    &__btn {
+        font-family: variables.$fontfamily-secondary;
+        font-size: 1.2rem;
+        background-color: transparent;
+        color: variables.$secondary-color;
+        border: solid 1px;
+        border-radius: 2rem;
+        margin-top: 1.5rem;
+        padding: 0.6rem;
+    }
+}
