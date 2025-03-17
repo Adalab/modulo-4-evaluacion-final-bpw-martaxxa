@@ -19,10 +19,21 @@ async function getConnection() {
 }
 
 // Configuración
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+
+app.post('/api/register', (req, res) => {
+  console.log("Datos recibidos:", req.body);
+  res.json({ success: true, message: "Usuario registrado con éxito" });
+});
 
 // Servidor
 const port = 3000;
@@ -99,6 +110,42 @@ app.get("/rugby-femenino/leagues", async (req, res) => {
   });
 });
 
+app.get('/rugby-femenino/users', async (req, res) => {
+  try {
+    const conn = await getConnection();
+
+    const [users] = await conn.query('SELECT * FROM users');
+
+    await conn.end();
+
+    res.json({
+      success: true,
+      users: users
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+app.get("/api/register", async (req, res) => {
+
+  const conn = await getConnection();
+
+  const [users] = await conn.query("SELECT * FROM users;");
+
+  await conn.end();
+
+  res.json({
+    info: {
+      users_num: users.length,
+    },
+    results: users
+  });
+});
+
 app.get("/rugby-femenino/teams/:id", async (req, res) => {
   const conn = await getConnection();
 
@@ -154,6 +201,39 @@ app.post('/rugby-femenino/players', async (req, res) => {
   }
 
 })
+
+app.post('/rugby-femenino/users', async (req, res) => {
+  const { name, surname, email, password } = req.body;
+
+  if (!name || !surname || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: 'Faltan campos obligatorios'
+    });
+  }
+
+  try {
+    const conn = await getConnection();
+
+    const [result] = await conn.execute(
+      'INSERT INTO users (name, surname, email, password) VALUES (?, ?, ?, ?)', 
+      [name, surname, email, password]
+    );
+
+    await conn.end();
+
+    res.json({
+      success: true,
+      message: 'Usuario registrado con éxito',
+      userId: result.insertId,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 app.put('/rugby-femenino/players/:id', async (req, res) => {
 
